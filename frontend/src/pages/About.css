@@ -1,0 +1,13 @@
+/* src/pages/About.css */
+
+.skill-bar {
+  transition: width 1.5s ease-out; /* Controls the fill animation of the skill bar */
+}
+
+/* This is a modern and performant way to animate accordions using CSS grid */
+.grid-rows-\[1fr\] {
+  grid-template-rows: 1fr;
+}
+.grid-rows-\[0fr\] {
+  grid-template-rows: 0fr;
+}

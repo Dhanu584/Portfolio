@@ -1,0 +1,19 @@
+/* src/components/Home.css */
+
+/* This is a helper class to apply our custom font from tailwind.config.js */
+.font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+/* --- Hide the scrollbar for a cleaner look --- */
+
+/* For Webkit browsers like Chrome, Safari */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge, and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
