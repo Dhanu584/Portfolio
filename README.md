@@ -43,7 +43,7 @@ my-portfolio/
 <h2>📎 Connect with Me</h2>
 
 <p>
-  📧 Email: yourname@example.com <br />
-  🧑‍💻 GitHub: <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a> <br />
-  💼 LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a>
+  📧 Email: dhanashri.garande@gmail.com <br />
+  🧑‍💻 GitHub: <a href="https://github.com/Dhanu584" target="_blank">https://github.com/Dhanu584</a> <br />
+  💼 LinkedIn: <a href="www.linkedin.com/in/dhanashri-garande-01056a28a" target="_blank">linkedin.com/in/dhanshri</a>
 </p>
