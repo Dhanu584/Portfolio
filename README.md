@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://your-deployed-link.vercel.app" target="_blank">
+  <a href="https://portfolio-dhanu-blush.vercel.app/">
     🔗 <strong>View Live Demo</strong>
   </a>
 </p>
