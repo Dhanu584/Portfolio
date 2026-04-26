@@ -4,7 +4,7 @@ import './Home.css'; // For custom scrollbar hiding and font
 import { BsBag } from 'react-icons/bs';
 import { FiDownload } from 'react-icons/fi';
 import designerImage from '../assets/designer.png'; 
-import dhanashriImage from '../assets/dhanashri.jpg';
+import dhanashriImage from '../assets/dhanu1.jpeg';
 
 const Home = () => {
   
@@ -74,9 +74,9 @@ const Home = () => {
             <p className="mt-4 text-gray-600">
              Pursuing Computer Engineering  <br />from <a href="#" className="text-blue-500 hover:underline">https://vjti.ac.in/</a>
             </p>
-            <button className="mt-6 border border-black px-6 py-3 text-sm font-semibold flex items-center gap-2 hover:bg-black hover:text-white transition-colors duration-300">
+            {/*<button className="mt-6 border border-black px-6 py-3 text-sm font-semibold flex items-center gap-2 hover:bg-black hover:text-white transition-colors duration-300">
               VIEW PORTFOLIO <BsBag />
-            </button>
+            </button>*/}
           </div>
         </div>
 
@@ -91,11 +91,11 @@ const Home = () => {
           <div className="text-left text-black ml-16 md:ml-24 lg:ml-32">
             <h1 className="text-6xl md:text-8xl font-serif font-bold">I am</h1>
             <h1 className="text-6xl md:text-8xl font-serif font-bold">a Devloper</h1>
-            <p className="mt-4 text-gray-600">
-              Design, Devlop, Deploy. <br /> <a href="#" className="text-blue-500 hover:underline"></a>
+            <p className="mt-4 text-white-600">
+              Design, Devlop, Deploy. <br /> <a href="#" className="text-white-500 hover:underline"></a>
             </p>
             <button className="mt-6 border border-black px-6 py-3 text-sm font-semibold flex items-center gap-2 hover:bg-black hover:text-white transition-colors duration-300">
-             <a href="/cv.pdf" download>DOWNLOAD CV</a>  <FiDownload />
+             <a href="/cv.pdf" download>DOWNLOAD RESUME</a>  <FiDownload />
             </button>
           </div>
         </div>
