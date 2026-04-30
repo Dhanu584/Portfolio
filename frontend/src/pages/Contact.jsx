@@ -1,143 +1,131 @@
-// src/pages/Contact.jsx
-
-import React, { useState } from 'react';
-import { FiGlobe, FiMapPin, FiPhone } from 'react-icons/fi';
-
-// Reusable Section Header from previous components
-const SectionHeader = ({ subtitle, title }) => (
-  <div className="text-left mb-16">
-    <h3 className="text-gray-500 text-sm font-semibold tracking-widest uppercase">{subtitle}</h3>
-    <h2 className="font-serif text-5xl font-bold text-gray-800 mt-2">{title}</h2>
-  </div>
-);
-
-// Individual contact info item component
-const ContactInfoItem = ({ icon, title, link, href }) => (
-  <div className="flex items-start gap-4">
-    <div className="flex-shrink-0 bg-gray-100 p-5 rounded-md">
-      {icon}
-    </div>
-    <div>
-      <a href={href} className="text-lg text-blue-500 hover:underline">
-        {title}
-      </a>
-      <p className="text-gray-600">{link}</p> 
-    </div>
-  </div>
-);
+import { useEffect, useRef, useState } from "react";
+import "./Contact.css";
 
 const Contact = () => {
-  // State to manage the form data
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
+  const sectionRef = useRef(null);
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState(null);
 
-  // Handler for input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add("visible")),
+      { threshold: 0.1 }
+    );
+    sectionRef.current?.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
-  // NEW Handler for form submission that sends data to the backend
-  const handleSubmit = async (e) => {
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = e => {
     e.preventDefault();
-
-    try {
-      // The fetch call to your future backend API
-      const response = await fetch('http://localhost:5000/api/send-message', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert("Message sent successfully!");
-        setFormData({ name: '', email: '', subject: '', message: '' }); // Reset form
-      } else {
-        // Try to get error message from backend
-        const errorData = await response.json().catch(() => ({ error: 'An unknown error occurred.' }));
-        alert(`Failed to send message: ${errorData.error}`);
-      }
-    } catch (error) {
-      console.error("Error sending message:", error);
-      alert("An error occurred while sending the message. Please try again later.");
-    }
+    setStatus("sending");
+    setTimeout(() => { setStatus("sent"); setForm({ name: "", email: "", subject: "", message: "" }); }, 1800);
   };
-
-  const contactDetails = [
-    { icon: <FiGlobe size={24} className="text-blue-500" />, title: 'dhanashri.garande@gmail.com', href: 'mailto:dhnashri.garande@gmail.com' },
-    { icon: <FiMapPin size={24} className="text-blue-500" />, title: 'VJTI Mumbai,', link: 'Matunga east, Mumbai - 400019', href: '#' },
-    { icon: <FiPhone size={24} className="text-blue-500" />, title: '+91 9529206580', href: 'tel:+91 9529206580' },
-  ];
 
   return (
-    <section id="contact" className="py-24 px-4 bg-white">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader subtitle="Get in Touch" title="Contact" />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left Column: Contact Info */}
-          <div className="flex flex-col gap-12">
-            {contactDetails.map((item, index) => (
-              <ContactInfoItem key={index} {...item} />
-            ))}
-          </div>
+    <section id="contact" className="contact" ref={sectionRef}>
+      <div className="contact-inner">
 
-          {/* Right Column: Contact Form */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Name"
-              required
-              className="w-full p-4 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            />
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              required
-              className="w-full p-4 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            />
-            <input
-              type="text"
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              placeholder="Subject"
-              required
-              className="w-full p-4 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            />
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Message"
-              required
-              rows="6"
-              className="w-full p-4 bg-gray-100 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            ></textarea>
+        {/* Left */}
+        <div className="contact-left reveal">
+          <span className="deco-star-contact">✦</span>
+          <h2 className="contact-heading">
+            Let's<br /><em>Work Together</em>
+          </h2>
+          <p className="contact-body">
+            I'm currently open to freelance projects and full-time opportunities. 
+            Whether you have a project in mind or just want to say hi — my inbox is always open.
+          </p>
+
+          <div className="contact-info-list">
+  {[
+    ["📍", "Location", "India", null],
+    ["✉", "Email", "dhanashri@email.com", "mailto:dhanashri@email.com"],
+    ["💻", "GitHub", "github.com/dhanashri", "https://github.com/Dhanu584"],
+    ["💼", "LinkedIn", "linkedin.com/in/dhanashri", "https://www.linkedin.com/in/dhanashri-garande-125ab53a4/"],
+  ].map(([icon, label, val, link]) => (
+    <div key={label} className="contact-info-row">
+      <span className="contact-info-icon">{icon}</span>
+
+      <div>
+        <span className="contact-info-label">{label}</span>
+
+        {link ? (
+          <a
+            href={link}
+            target="_blank"
+            rel="noreferrer"
+            className="contact-info-val"
+          >
+            {val}
+          </a>
+        ) : (
+          <span className="contact-info-val">{val}</span>
+        )}
+      </div>
+    </div>
+  ))}
+</div>
+
+          <div className="avail-row">
+            <span className="avail-dot" />
+            <span>Available for new projects</span>
+          </div>
+        </div>
+
+        {/* Right — form */}
+        <div className="contact-right reveal" style={{ animationDelay: "0.15s" }}>
+          <form className="contact-form" onSubmit={handleSubmit}>
+            <div className="form-row-two">
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your name..." value={form.name} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" value={form.email} onChange={handleChange} required />
+              </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="subject">Subject</label>
+              <input id="subject" name="subject" type="text" placeholder="Let's build something great" value={form.subject} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="message">Message</label>
+              <textarea id="message" name="message" rows={5} placeholder="Tell me..." value={form.message} onChange={handleChange} required />
+            </div>
             <button
               type="submit"
-              className="bg-blue-500 text-white font-bold py-4 px-8 rounded-md hover:bg-blue-600 transition-colors duration-300 self-start"
+              className={`form-submit-btn ${status === "sent" ? "sent" : ""}`}
+              disabled={status === "sending" || status === "sent"}
             >
-              SEND MESSAGE
+              {status === "sending" && <><span className="send-spin" /> Sending...</>}
+              {status === "sent" && "✅ Message Sent!"}
+              {!status && "Send Message →"}
             </button>
           </form>
         </div>
+
       </div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-inner">
+          <div className="footer-logo">
+            <span className="footer-star">✦</span>
+            <span>Dhanashri</span>
+          </div>
+          <p className="footer-copy">© 2025 Dhanashri Garande ♥</p>
+          <div className="footer-links">
+            <a href="https://github.com/Dhanu584" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://www.linkedin.com/in/dhanashri-garande-125ab53a4/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="mailto:dhanashri@email.com?subject=Contact%20from%20Portfolio&body=Hi%20Dhanashri,">
+  Email
+</a>
+          </div>
+        </div>
+      </footer>
     </section>
   );
 };

@@ -1,121 +1,129 @@
-// src/components/Home.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import './Home.css'; // For custom scrollbar hiding and font
-import { BsBag } from 'react-icons/bs';
-import { FiDownload } from 'react-icons/fi';
-import designerImage from '../assets/designer.png'; 
-import dhanashriImage from '../assets/dhanu1.jpeg';
+//Home.jsx
+import { useEffect, useRef } from "react";
+import "./Home.css";
+import designerImg from "../assets/designer2.png";
+import designerImg1 from "../assets/dhanu1.jpeg";
 
 const Home = () => {
-  
-  // State to track the active slide
-  const [activeSlide, setActiveSlide] = useState(1);
-  
-  // Refs for the slide sections
-  const slide1Ref = useRef(null);
-  const slide2Ref = useRef(null);
-  
-  // Ref for the scroll container
-  const containerRef = useRef(null);
+  const sectionRef = useRef(null);
 
-  // This effect sets up the Intersection Observer to watch which slide is visible
   useEffect(() => {
-    const options = {
-      root: containerRef.current, // important: observe within the scroll container
-      threshold: 0.5, // Trigger when 50% of the slide is visible
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          if (entry.target.id === 'slide1') {
-            setActiveSlide(1);
-          } else if (entry.target.id === 'slide2') {
-            setActiveSlide(2);
-          }
-        }
-      });
-    }, options);
-
-    if (slide1Ref.current) observer.observe(slide1Ref.current);
-    if (slide2Ref.current) observer.observe(slide2Ref.current);
-
-    // Cleanup observer on component unmount
-    return () => {
-      if (slide1Ref.current) observer.unobserve(slide1Ref.current);
-      if (slide2Ref.current) observer.unobserve(slide2Ref.current);
-    };
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add("visible")),
+      { threshold: 0.05 }
+    );
+    sectionRef.current?.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+    return () => obs.disconnect();
   }, []);
 
-  // Function to scroll to a specific slide
-  const scrollToSlide = (slideRef) => {
-    slideRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
+  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section id="home" className="relative h-screen w-full">
-      {/* Scrollable Container */}
-      <div 
-        ref={containerRef}
-        className="h-screen w-full overflow-y-scroll snap-y snap-mandatory hide-scrollbar"
-      >
-        {/* Slide 1: Designer */}
-        <div
-          id="slide1"
-          ref={slide1Ref}
-          className="h-screen w-full snap-start flex items-center bg-cover bg-center"
-          // style={{ backgroundImage: `url('./assets/designer.jpg')` }}
-          style={{ backgroundImage: `url(${designerImage})` }}
+    <section id="home" className="home" ref={sectionRef}>
 
-        >
-          <div className="text-left text-black ml-16 md:ml-24 lg:ml-32">
-            <h1 className="text-6xl md:text-8xl font-serif font-bold">Hi!</h1>
-            <h1 className="text-6xl md:text-8xl font-serif font-bold">I'm Dhanashri</h1>
-            <p className="mt-4 text-gray-600">
-             Pursuing Computer Engineering  <br />from <a href="#" className="text-blue-500 hover:underline">https://vjti.ac.in/</a>
-            </p>
-            {/*<button className="mt-6 border border-black px-6 py-3 text-sm font-semibold flex items-center gap-2 hover:bg-black hover:text-white transition-colors duration-300">
-              VIEW PORTFOLIO <BsBag />
-            </button>*/}
-          </div>
+      <div className="hero-top">
+
+        <div className="hero-stack-text" aria-hidden="true">
+          {"PORTFOLIO".split("").map((_, i) => (
+            <div key={i} className="hero-stack-line" style={{ opacity: 1 - i * 0.18 }}>
+              {"PORTFOLIO".slice(i)}
+            </div>
+          ))}
         </div>
 
-        {/* Slide 2: Jackson */}
-        <div
-          id="slide2"
-          ref={slide2Ref}
-          className="h-screen w-full snap-start flex items-center bg-cover bg-center"
-          style={{ backgroundImage: `url(${dhanashriImage})` }}
+        {/* UPDATED PHOTO BLOCK */}
+        <div className="hero-photo-wrap reveal">
+          
+          {/* IMAGE ON TOP */}
+          <img
+            src={designerImg}
+            alt="Dhanashri Garande"
+            className="hero-photo"
+          />
+      </div>
+          {/* ORANGE BLOCK BELOW */}
+          {/* <div className="hero-orange-card"></div> */}
+                    <p className="cv-info-text">
+            Pursuing Computer Engineering from{" "}
+            <a href="https://vjti.ac.in/" target="_blank" rel="noreferrer">
+              VJTI
+            </a>
+          </p>
 
-        >
-          <div className="text-left text-black ml-16 md:ml-24 lg:ml-32">
-            <h1 className="text-6xl md:text-8xl font-serif font-bold">I am</h1>
-            <h1 className="text-6xl md:text-8xl font-serif font-bold">a Devloper</h1>
-            <p className="mt-4 text-white-600">
-              Design, Devlop, Deploy. <br /> <a href="#" className="text-white-500 hover:underline"></a>
-            </p>
-            <button className="mt-6 border border-black px-6 py-3 text-sm font-semibold flex items-center gap-2 hover:bg-black hover:text-white transition-colors duration-300">
-             <a href="/cv.pdf" download>DOWNLOAD RESUME</a>  <FiDownload />
-            </button>
+          <a href="/cv.pdf" download className="cv-download-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            </svg>
+            Download CV
+          </a>
+       
+
+        {/* MOVED HANDLES LEFT OF BLOCK */}
+        {/* <div className="hero-handles reveal">
+          <div className="handle-row">
+            <span className="handle-label">GH:</span>
+            <span>/dhanashri-garande</span>
           </div>
+          <div className="handle-row">
+            <span className="handle-label">LI:</span>
+            <span>/dhanashri-garande</span>
+          </div>
+          <div className="handle-row">
+            <span className="handle-label">EM:</span>
+            <span>dhanashri@email.com</span>
+          </div>
+        </div> */}
+
+        <span className="deco-star s1">✦</span>
+        <span className="deco-star s2">✦</span>
+
+        <p className="hero-tagline reveal">
+          I love coding and crafting for the web.<br />
+          I approach problems in a rational and pragmatic<br />
+          way and seek elegant, functional solutions.
+        </p>
+      </div>
+
+      <div className="scroll-cta" onClick={() => scrollTo("about")}>
+        <span>Scroll</span>
+        <span>down</span>
+      </div>
+
+      <div className="hero-bottom">
+        <div className="hero-bottom-inner">
+
+          <div className="hello-col reveal">
+            <h1 className="hello-heading">
+              Hello,<br />I'm Dhanashri<span className="yellow-dot">!</span>
+            </h1>
+            <p className="hello-desc">
+              I'm a passionate <strong>Full Stack Developer</strong> based in India with a love for
+              clean code and beautiful interfaces. I build web experiences that are fast,
+              accessible, and genuinely delightful to use.
+            </p>
+            <a href="https://linkedin.com/in/dhanashri-garande" className="search-link" target="_blank" rel="noreferrer">
+              <span className="search-icon">⌕</span>
+              linkedin.com/in/dhanashri-garande
+            </a>
+          </div>
+
+          <div className="hello-photo-col reveal">
+            <div className="hello-photo-card">
+              <img src={designerImg1} alt="Dhanashri Garande" className="hello-photo" />
+            </div>
+            <div className="float-tag tag-1">Full Stack Dev</div>
+            <div className="float-tag tag-2">India 🇮🇳</div>
+            <div className="contact-mini-card">
+              <h4>Contact</h4>
+              <p>📍 India</p>
+              <p>✉ dhanashri@email.com</p>
+              <p>💻 github.com/dhanashri-garande</p>
+            </div>
+          </div>
+
         </div>
       </div>
-      
-      {/* Side Navigation Dots */}
-      <div className="absolute left-8 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-10">
-        <button
-          onClick={() => scrollToSlide(slide1Ref)}
-          className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-            activeSlide === 1 ? 'bg-blue-500' : 'bg-gray-400 hover:bg-gray-500'
-          }`}
-        ></button>
-        <button
-          onClick={() => scrollToSlide(slide2Ref)}
-          className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-            activeSlide === 2 ? 'bg-blue-500' : 'bg-gray-400 hover:bg-gray-500'
-          }`}
-        ></button>
-      </div>
+
     </section>
   );
 };

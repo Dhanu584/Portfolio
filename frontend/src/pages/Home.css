@@ -1,19 +1,464 @@
-/* src/components/Home.css */
-
-/* This is a helper class to apply our custom font from tailwind.config.js */
-.font-serif {
-  font-family: 'Playfair Display', serif;
+/* ═══════════════════════════════════════════════
+   HOME  —  retro editorial
+═══════════════════════════════════════════════ */
+.home {
+  padding-top: 64px; /* navbar height */
+  display: flex;
+  flex-direction: column;
 }
 
-/* --- Hide the scrollbar for a cleaner look --- */
-
-/* For Webkit browsers like Chrome, Safari */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
+/* ── HERO TOP (dark green full-width band) ───────── */
+.hero-top {
+  background: var(--green);
+  position: relative;
+  min-height: 92vh;
+  padding: 3.5rem 3rem 6rem;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
 }
 
-/* For IE, Edge, and Firefox */
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+/* ── STACKED PORTFOLIO TEXT ──────────────────────── */
+.hero-stack-text {
+  position: absolute;
+  top: 2.5rem;
+  left: 3rem;
+  /* stop before the right photo zone  */
+  right: clamp(340px, 38vw, 560px);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-stack-line {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(3rem, 8.5vw, 8rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--cream);
+}
+
+/* solid first line, outlined rest */
+.hero-stack-line:nth-child(1) { color: var(--cream); }
+.hero-stack-line:nth-child(n+2) {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(240,235,224,0.55);
+}
+.hero-stack-line:nth-child(3) { -webkit-text-stroke: 1.5px var(--yellow); }
+.hero-stack-line:nth-child(n+4) { -webkit-text-stroke: 1px var(--yellow); }
+
+/* ── RIGHT: ORANGE PHOTO BLOCK ───────────────────── */
+/*  Positioned in the empty right column               */
+.hero-photo-wrap {
+  position: absolute;
+
+  /* bottom-right placement */
+  right: 2rem;
+  bottom: 0rem;
+
+  z-index: 3;
+
+  /* horizontal layout: CV (left) + photo (right) */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 1.2rem;
+
+  /* let image control size */
+  width: auto;
+}
+
+/* .hero-orange-card {
+  width: 100%;
+  height: 80%;
+  background: #c7621a;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+
+  box-shadow: 8px 10px 0px rgba(0,0,0,0.25);
+} */
+
+.hero-photo {
+  width: clamp(320px, 60vw, 480px); /* increased size */
+  height: auto;
+  object-fit: cover;
+  display: block;
+  z-index: 2;
+  position: relative;
+
+  border-radius: 6px;
+}
+
+.cv-info-text {
+  position: absolute;
+
+  /* place it BELOW the photo, left-aligned with the CV button */
+  right: clamp(240px, 30vw, 380px);
+  bottom: 230px; /* moved down, below the Download CV button */
+  right: 360px;
+  z-index: 6;
+
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1.5;
+
+  /* dark pill badge — visible on both green and yellow backgrounds */
+  background: rgba(10, 30, 10, 0.72);
+  color: var(--cream);
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+  max-width: none;
+}
+
+.cv-info-text a {
+  color: var(--yellow);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.cv-info-text a:hover {
+  text-decoration: underline;
+}
+
+
+/* ── DOWNLOAD CV BUTTON ──────────────────────────── */
+.cv-download-btn {
+  position: absolute;
+
+  /* place near photo edge */
+  right: clamp(260px, 32vw, 400px);
+  bottom: 280px; /* controls vertical position */
+  right: 430px;
+  z-index: 6;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0.75rem 1.7rem;
+  border-radius: 100px;
+
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  /* 🔥 NEW COLOR (contrast with yellow block) */
+  background: rgba(240,235,224,0.65);
+  color: var(--green-dark);
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transition: all 0.25s ease;
+}
+
+.cv-download-btn:hover {
+  transform: translateY(-4px) scale(1.04);
+
+  /* slightly more solid + premium */
+  background: rgba(240,235,224,0.9);
+
+  /* deeper text for contrast */
+  color: var(--green);
+
+  /* stronger shadow = lift effect */
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+}
+
+/* ── SOCIAL HANDLES — far right ─────────────────── */
+/* .hero-handles {
+  position: absolute;
+  right: clamp(300px, 40vw, 420px);
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 4;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  font-size: 1.5rem;
+  color: aliceblue;
+} */
+
+.handle-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  color: var(--cream);
+  opacity: 0.82;
+}
+
+.handle-label {
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  min-width: 26px;
+}
+
+/* ── DECORATIVE STARS ────────────────────────────── */
+.deco-star {
+  position: absolute;
+  color: var(--yellow);
+  font-size: 1.8rem;
+  line-height: 1;
+  z-index: 5;
+  animation: spin-star 8s linear infinite;
+}
+/* star above the photo block */
+.s1 {
+  /* sits roughly at top-centre of the photo wrap */
+  right: clamp(290px, 33vw, 430px);
+  top: 2.2rem;
+  font-size: 1.4rem;
+}
+/* small star bottom-right */
+.s2 {
+  bottom: 5rem;
+  right: 2.8rem;
+  font-size: 1.1rem;
+  animation-duration: 12s;
+}
+
+@keyframes spin-star { to { transform: rotate(360deg); } }
+
+/* ── TAGLINE ─────────────────────────────────────── */
+/* bottom-left, below the stacked text area */
+.hero-tagline {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 3rem;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  line-height: 1.85;
+  color: rgba(240,235,224,0.58);
+  max-width: 260px;
+  z-index: 2;
+}
+
+/* ── SCROLL CTA PILL ─────────────────────────────── */
+.scroll-cta {
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  background: var(--yellow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--black);
+  cursor: pointer;
+  margin: -52px auto 0;
+  position: relative;
+  z-index: 10;
+  line-height: 1.35;
+  transition: transform 0.3s, background 0.2s;
+  box-shadow: 0 8px 28px rgba(245,168,0,0.32);
+  letter-spacing: 0.01em;
+}
+.scroll-cta:hover {
+  transform: scale(1.08);
+  background: var(--yellow-dark);
+}
+
+/* ═══════════════════════════════════════════════
+   HERO BOTTOM  —  cream band ("Hello, I'm...")
+═══════════════════════════════════════════════ */
+.hero-bottom {
+  background: var(--cream);
+  padding: 5rem 3rem 6rem;
+}
+
+.hero-bottom-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Hello col */
+.hello-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hello-heading {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--green-dark);
+}
+
+.yellow-dot { color: var(--yellow); }
+
+.hello-desc {
+  font-family: var(--sans);
+  font-size: 0.96rem;
+  line-height: 1.82;
+  color: rgba(30,45,30,0.68);
+  font-weight: 300;
+  max-width: 400px;
+}
+
+.hello-desc strong { color: var(--green-dark); font-weight: 600; }
+
+.search-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--yellow);
+  color: var(--black);
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.75rem 1.4rem;
+  border-radius: 100px;
+  text-decoration: none;
+  width: fit-content;
+  transition: background 0.2s, transform 0.2s;
+}
+.search-link:hover { background: var(--yellow-dark); transform: translateY(-2px); }
+.search-icon { font-size: 1.1rem; }
+
+/* Photo col */
+.hello-photo-col {
+  position: relative;
+  padding-top: 1.5rem;
+}
+
+.hello-photo-card {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 3/4;
+  margin-left: auto;
+  background: var(--green);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 6px 8px 0 var(--cream-dark);
+}
+
+.hello-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+/* Floating tags */
+.float-tag {
+  position: absolute;
+  background: var(--yellow);
+  color: var(--black);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 1.2rem;
+  border-radius: 100px;
+  white-space: nowrap;
+  z-index: 3;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.tag-1 { top: 2.5rem; left: -1rem; animation: floatTag 3.5s ease-in-out infinite; }
+.tag-2 { bottom: 8rem; right: -1rem; animation: floatTag 3.5s 1.2s ease-in-out infinite; }
+
+@keyframes floatTag {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* Contact mini card */
+.contact-mini-card {
+  position: absolute;
+  bottom: -1rem;
+  left: -1.5rem;
+  background: var(--black);
+  color: var(--cream);
+  border-radius: 8px;
+  padding: 1.2rem 1.4rem;
+  z-index: 4;
+  min-width: 220px;
+}
+
+.contact-mini-card h4 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--cream);
+}
+
+.contact-mini-card p {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: rgba(240,235,224,0.68);
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  /* tighten photo block on medium screens */
+  .hero-photo-wrap {
+    right: clamp(140px, 16vw, 200px);
+    width: clamp(180px, 20vw, 250px);
+  }
+  .hero-handles { right: 1.5rem; }
+}
+
+@media (max-width: 900px) {
+  .hero-top { min-height: 70vh; }
+
+  /* stack handles below, hide photo on small */
+  .hero-photo-wrap {
+    position: static;
+    transform: none;
+    margin: 2rem auto 0;
+    width: 55vw;
+    max-width: 260px;
+  }
+
+  .hero-handles {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .hero-stack-text { right: 1.5rem; }
+
+  .hero-bottom-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .contact-mini-card { position: static; margin-top: 1.5rem; }
+  .float-tag { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero-top { padding: 3rem 1.5rem 4rem; }
+  .hero-stack-line { font-size: clamp(2rem, 12vw, 4rem); }
+  .hero-bottom { padding: 3rem 1.5rem 5rem; }
+  .hello-heading { font-size: 2.8rem; }
+  .hero-tagline { display: none; }
 }

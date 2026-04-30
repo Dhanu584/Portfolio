@@ -1,114 +1,65 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './Navbar.css';
+import { useState, useEffect } from "react";
+import "./Navbar.css";
 
 const Navbar = () => {
-  const [activeLink, setActiveLink] = useState('home');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const observerRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
-  const navLinks = [
-    { label: 'Home',    id: 'home' },
-    { label: 'About',   id: 'about' },
-    { label: 'Blogs',   id: 'blogs' },
-    { label: 'Contact', id: 'contact' },
-  ];
-
-  // Scroll shadow effect
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 60);
+      const ids = ["home", "about", "skills", "blog", "contact"];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el) {
+          const r = el.getBoundingClientRect();
+          if (r.top <= 120 && r.bottom >= 120) { setActiveSection(id); break; }
+        }
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // IntersectionObserver — highlights the section currently in view
-  useEffect(() => {
-    const sections = navLinks
-      .map(({ id }) => document.getElementById(id))
-      .filter(Boolean);
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        // Pick the entry that is most visible on screen
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-        if (visible.length > 0) {
-          setActiveLink(visible[0].target.id);
-        }
-      },
-      {
-        // Fire when ≥30% of a section enters the viewport
-        threshold: [0.3],
-        // Shrink the root margin so the trigger zone is the middle of the screen
-        rootMargin: '-10% 0px -60% 0px',
-      }
-    );
-
-    sections.forEach((sec) => observerRef.current.observe(sec));
-    return () => observerRef.current?.disconnect();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const handleLinkClick = (id) => {
-    setActiveLink(id);
-    setIsMenuOpen(false);
-  };
+  const scrollTo = (id) => { document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }); setMenuOpen(false); };
 
   return (
-    <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
-      <div className="navbar__inner">
+    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <div className="nav-inner">
+        {/* Logo */}
+        <button className="nav-logo" onClick={() => scrollTo("home")}>
+          <span className="nav-star">✦</span>
+          <span className="nav-logo-text">Dhanashri</span>
+        </button>
 
-        {/* Brand */}
-        <a
-          href="#home"
-          className="navbar__brand"
-          onClick={() => handleLinkClick('home')}
-        >
-          Dhanashri Garande
-        </a>
-
-        {/* Desktop links */}
-        <ul className="navbar__links">
-          {navLinks.map(({ label, id }) => (
+        {/* Links */}
+        <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
+          {["home","about","skills","blog","contact"].map(id => (
             <li key={id}>
-              <a
-                href={`#${id}`}
-                onClick={() => handleLinkClick(id)}
-                className={`navbar__link ${activeLink === id ? 'navbar__link--active' : ''}`}
+              <button
+                className={`nav-link ${activeSection === id ? "active" : ""}`}
+                onClick={() => scrollTo(id)}
               >
-                {label}
-                <span className="navbar__link-underline" />
-              </a>
+                {id.charAt(0).toUpperCase() + id.slice(1)}
+              </button>
             </li>
           ))}
         </ul>
 
+        {/* CTA */}
+        <button className="nav-cta" onClick={() => scrollTo("contact")}>
+          Get in touch!
+        </button>
+
         {/* Hamburger */}
         <button
-          className={`navbar__hamburger ${isMenuOpen ? 'navbar__hamburger--open' : ''}`}
-          onClick={() => setIsMenuOpen((o) => !o)}
-          aria-label="Toggle menu"
-          aria-expanded={isMenuOpen}
+          className={`hamburger ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
         >
-          <span />
-          <span />
-          <span />
+          <span /><span /><span />
         </button>
-      </div>
-
-      {/* Mobile dropdown */}
-      <div className={`navbar__mobile ${isMenuOpen ? 'navbar__mobile--open' : ''}`}>
-        {navLinks.map(({ label, id }) => (
-          <a
-            key={id}
-            href={`#${id}`}
-            onClick={() => handleLinkClick(id)}
-            className={`navbar__mobile-link ${activeLink === id ? 'navbar__mobile-link--active' : ''}`}
-          >
-            {label}
-          </a>
-        ))}
       </div>
     </nav>
   );

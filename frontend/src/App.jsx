@@ -8,6 +8,7 @@ import Navbar from './components/Navbar';
 // Import Pages
 import Home from './pages/Home';
 import About from './pages/About';
+import Skills from './pages/Skills';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact'; // <-- The final page is imported
 
@@ -22,6 +23,7 @@ function App() {
         {/* No more placeholders! */}
         <Home />
         <About />
+        <Skills />
         <Blog />
         <Contact />
       </main>
